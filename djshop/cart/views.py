@@ -1,4 +1,8 @@
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
+
+from .cart import Cart
+from shop.models import Product
 
 
 def cart_summary(request):
@@ -18,4 +22,13 @@ def cart_delete(request):
 
 def cart_add(request):
 
-    pass
+    cart = Cart(request)
+    
+    if request.POST.get("action") == "POST":
+        product_id = int(request.POST.get("product_id"))
+        product_quantity = int(request.POST.get("product_quantity"))
+
+        product = get_object_or_404(Product, id=product_id)
+
+        cart.add(product=product, product_qty=product_quantity)
+        
