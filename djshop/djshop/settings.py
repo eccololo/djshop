@@ -54,7 +54,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'shop.views.categories' # User CP
+                'shop.views.categories', # User CP
+                'cart.context_processors.cart', # User CP
             ],
         },
     },
