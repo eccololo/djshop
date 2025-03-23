@@ -11,7 +11,7 @@ class Cart():
         if "session_key" not in request.session:
 
             cart = self.session["session_key"] = {
-                'fav_number': 7
+
             }
 
         self.cart = cart
