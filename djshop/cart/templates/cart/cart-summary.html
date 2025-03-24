@@ -1,5 +1,6 @@
 {% include "shop/base.html" %} 
 {% load static %} 
+{% load mathfilters %}
 
 {% block content %}
 
@@ -8,6 +9,10 @@
     <h1 class="h5">Shopping cart</h1>
 
     <hr />
+    
+    {% for item in cart %}
+
+    {% with product=item.product %}
 
     <br />
 
@@ -17,16 +22,16 @@
           class="img-fluid mx-auto d-block"
           width="200px"
           alt="Responsive image"
-          src=""
+          src="{{ product.image.url }}"
         />
         <!-- Product image -->
       </div>
 
       <div class="col-md-9 col-lg-10 ps-md-3 ps-lg-10">
-        <a href="" class="text-decoration-none text-reset">
+        <a href="{{ product.get_absolute_url }}" class="text-decoration-none text-info">
           <!-- Product get absolute url -->
 
-          <h1 class="h5 pt-2"><!-- Product title --></h1>
+          <h1 class="h5 pt-2">{{ product.title }}</h1>
         </a>
 
         <div class="border">
@@ -37,7 +42,7 @@
               <div class="col-6 text-end">
                 <span class="h6 fw-bold"
                   >$
-                  <!-- Product price -->
+                  {{ product.price|mul:item.qty }}
                 </span>
               </div>
             </div>
@@ -89,13 +94,17 @@
       </div>
     </div>
 
+    {% endwith %}
+    {% endfor %}
+    <br />
+    <br />
     <div class="col-12 text-end">
       <div class="h6 fw-bold">
         Sub total: $
-        <div id="total" class="d-inline-flex"><!-- cart.get_total --></div>
+        <div id="total" class="d-inline-flex">{{ cart.get_total }}</div>
       </div>
     </div>
   </div>
 </main>
-
+<br />
 {% endblock %}

@@ -29,6 +29,9 @@ INSTALLED_APPS = [
     # User apps
     'shop',
     'cart',
+
+    # Installed Apps
+    'mathfilters',
 ]
 
 MIDDLEWARE = [

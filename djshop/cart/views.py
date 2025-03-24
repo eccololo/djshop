@@ -8,7 +8,13 @@ from shop.models import Product
 
 def cart_summary(request):
 
-    return render(request, "cart/cart-summary.html")
+    cart = Cart(request)
+
+    context = {
+        "cart": cart
+    }
+
+    return render(request, "cart/cart-summary.html", context=context)
 
 
 def cart_update(request):
