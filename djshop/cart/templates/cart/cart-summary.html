@@ -55,7 +55,7 @@
 
                 &nbsp;
 
-                <select id="">
+                <select id="select{{ product.id }}">
                   <option selected>{{item.qty}}</option>
 
                   <option value="">1</option>
@@ -72,8 +72,8 @@
 
                 <button
                   type="button"
-                  id="update-button"
                   class="btn btn-primary btn-sm update-button"
+                  data-index="{{ product.id }}"
                 >
                   Update
                 </button>
@@ -82,8 +82,8 @@
 
                 <button
                   type="button"
-                  id="delete-button"
                   class="btn btn-danger btn-sm delete-button"
+                  data-index="{{ product.id }}"
                 >
                   Delete
                 </button>
@@ -107,4 +107,54 @@
   </div>
 </main>
 <br />
+
+<script>
+  // For Delete Button 
+  $(document).on("click", ".delete-button", function(e){
+      e.preventDefault();
+      $.ajax({
+          type: "POST",
+          url: "{% url 'cart-delete' %}",
+          data: {
+            product_id: $(this).data("index"),
+            csrfmiddlewaretoken: "{{ csrf_token }}",
+            action: "post"
+          },
+          success: function(json){
+              // console.log(json);
+              location.reload()
+              document.getElementById("cart-qty").textContent = json.qty
+              document.getElementById("total").textContent = json.total
+          },
+          error: function(xhr, errmsg, err){
+
+          }
+      });
+  });
+
+  // For Update Button
+  $(document).on("click", ".update-button", function(e){
+    e.preventDefault();
+    var theproductid = $(this).data("index");
+    $.ajax({
+        type: "POST",
+        url: "{% url 'cart-update' %}",
+        data: {
+          product_id: theproductid,
+          product_quantity: $("#select" + theproductid + " option:selected").text(),
+          csrfmiddlewaretoken: "{{ csrf_token }}",
+          action: "post"
+        },
+        success: function(json){
+            // console.log(json);
+            location.reload()
+            document.getElementById("cart-qty").textContent = json.qty
+            document.getElementById("total").textContent = json.total
+        },
+        error: function(xhr, errmsg, err){
+
+        }
+    });
+});
+</script> 
 {% endblock %}
