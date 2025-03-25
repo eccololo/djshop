@@ -1,6 +1,8 @@
 from decimal import Decimal
 from shop.models import Product
 
+import copy
+
 class Cart():
 
     def __init__(self, request):
@@ -69,7 +71,7 @@ class Cart():
 
         products = Product.objects.filter(id__in=all_product_ids)
 
-        cart = self.cart.copy()
+        cart = copy.deepcopy(self.cart)
 
         for product in products:
 

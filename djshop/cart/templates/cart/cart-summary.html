@@ -122,9 +122,9 @@
           },
           success: function(json){
               // console.log(json);
-              location.reload()
-              document.getElementById("cart-qty").textContent = json.qty
-              document.getElementById("total").textContent = json.total
+              location.reload(true);
+              document.getElementById("cart-qty").textContent = json.qty;
+              document.getElementById("total").textContent = json.total;
           },
           error: function(xhr, errmsg, err){
 
@@ -147,9 +147,9 @@
         },
         success: function(json){
             // console.log(json);
-            location.reload()
-            document.getElementById("cart-qty").textContent = json.qty
-            document.getElementById("total").textContent = json.total
+            location.reload(true);
+            document.getElementById("cart-qty").textContent = json.qty;
+            document.getElementById("total").textContent = json.total;
         },
         error: function(xhr, errmsg, err){
 
