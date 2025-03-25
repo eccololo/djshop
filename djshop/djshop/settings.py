@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     # User apps
     'shop',
     'cart',
+    'account',
 
     # Installed Apps
     'mathfilters',

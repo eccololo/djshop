@@ -10,6 +10,8 @@ urlpatterns = [
     path('', include("shop.urls")),
     # Cart app
     path('cart/', include("cart.urls")),
+    # Account app
+    path('account/', include("account.urls")),
 ] 
 
 # Media files config.
