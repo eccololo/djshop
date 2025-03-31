@@ -1,1 +1,29 @@
-<h1>Delete account</h1>
+{% include "shop/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<style>
+    body {
+        background-color: grey;
+    }
+</style>
+<body>
+    
+    <br />
+    <div class="container bg-white shadow-md p-5 form-layout">
+        <h3>Delete your account</h3>
+        <hr />
+        <p>Are you sure you want to delete your account?</p>
+        <br />
+        <br />
+        <form method="POST" autocomplete="off">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-lg btn-block btn-danger w-100 p-2">
+                &nbsp; Delete
+            </button>
+        </form>
+    </div>
+    <br />
+</body>
+{% endblock %}
