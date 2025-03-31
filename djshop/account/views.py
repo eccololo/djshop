@@ -1,14 +1,23 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+
+# Registration Email Verification
 from django.contrib.sites.shortcuts import get_current_site # returns current domain
 from django.template.loader import render_to_string # builds email string message from template
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.models import User
 
-from .forms import CreateUserForm
+# Login / Logout
+from django.contrib.auth.models import auth
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+
+from .forms import CreateUserForm, LoginForm
 from .token import user_tokenizer_generate
 
+
+# Account registration.
 def register(request):
 
     form = CreateUserForm()
@@ -44,6 +53,7 @@ def register(request):
     return render(request, "account/registration/register.html", context=context)
 
 
+# Registration Email Verification
 def email_verification(request, uidb64, token):
 
     unique_id = force_str(urlsafe_base64_decode(uidb64))
@@ -79,8 +89,50 @@ def email_verification_failed(request):
     return render(request, "account/registration/email-verification-failed.html")
 
 
+# Login to account 
+def my_login(request):
+
+    form = LoginForm()
+
+    if request.method == "POST":
+
+        form = LoginForm(request, data=request.POST)
+
+        if form.is_valid():
+
+            username = request.POST.get("username")
+            password = request.POST.get("password")
+
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                
+                auth.login(request, user)
+
+                return redirect("dashboard")
+
+    context = {
+        "form": form
+    }
+
+    return render(request, "account/my-login.html", context=context)
 
 
+
+# Logout user
+def user_logout(request):
+
+    auth.logout(request)
+
+    return redirect("shop")
+
+
+
+# Dashboard
+@login_required(login_url="my-login")
+def dashboard(request):
+
+    return render(request, "account/dashboard.html")
 
 
 
