@@ -139,6 +139,8 @@ def dashboard(request):
 @login_required(login_url="my-login")
 def profile_management(request):
 
+    user_form = UpdateUserForm(instance=request.user)
+
     # Updating user - username and email.
     if request.method == "POST":
 
@@ -150,7 +152,6 @@ def profile_management(request):
 
             return redirect("dashboard")
         
-    user_form = UpdateUserForm(instance=request.user)
 
     context = {
         "user_form": user_form
