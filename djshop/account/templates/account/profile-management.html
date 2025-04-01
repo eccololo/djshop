@@ -9,10 +9,13 @@
     }
 </style>
 <body>
-    
     <br />
     <div class="container bg-white shadow-md p-5 form-layout">
-        <h3>Update your account</h3>
+        <h3><i aria-hidden="true" class="fa fa-address-book"></i> Profile Management</h3>
+    </div>
+    <br />
+    <div class="container bg-white shadow-md p-5 form-layout">
+        <h4>Update your account</h4>
         <hr /> 
         <br />
         <form method="POST" autocomplete="off">
@@ -22,14 +25,14 @@
             {{ user_form.email|as_crispy_field }}
             <br />
             <br />
-            <button type="submit" class="btn btn-lg btn-block btn-secondary w-100 p-2">
-                &nbsp; Update
+            <button type="submit" class="btn btn-lg btn-primary">
+                &nbsp; Update your account
             </button>
         </form>
     </div>
     <br />
     <div class="container bg-white shadow-md p-5 form-layout">
-        <h3>Delete your account</h3>
+        <h4>Delete your account</h4>
         <hr />
         <p>Proceed if you wish to delete your account.</p>
         <br />
@@ -38,7 +41,7 @@
         type="button"
         href="{% url 'delete-account' %}"
         >
-        Delete
+        Delete your account
         </a>
     </div>
 </body>

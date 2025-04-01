@@ -19,9 +19,18 @@
         <br />
         <form method="POST" autocomplete="off">
             {% csrf_token %}
-            <button type="submit" class="btn btn-lg btn-block btn-danger w-100 p-2">
-                &nbsp; Delete
+            <button type="submit" class="btn btn-lg btn-danger">
+                &nbsp; Delete your account
             </button>
+            <br />
+            <br />
+            <a
+            class="btn btn-lg btn-primary"
+            type="button"
+            href="{% url 'profile-management' %}"
+            >
+            <i arian-hidden="true" class="fa fa-arrow-left"></i> &nbsp; Go Back
+            </a>
         </form>
     </div>
     <br />
