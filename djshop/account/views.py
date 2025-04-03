@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib import messages
 
 # Registration Email Verification
 from django.contrib.sites.shortcuts import get_current_site # returns current domain
@@ -130,9 +131,10 @@ def user_logout(request):
                 continue
             else:
                 del request.session[key]
-
     except KeyError:
         pass
+
+    messages.success(request, "Logout success!")
 
     return redirect("shop")
 
@@ -160,6 +162,8 @@ def profile_management(request):
 
             user_form.save()
 
+            messages.info(request, "Account updated!")
+
             return redirect("dashboard")
         
 
@@ -179,6 +183,8 @@ def delete_account(request):
     if request.method == "POST":
 
         user.delete()
+
+        messages.error(request, "Account deleted!")
 
         return redirect("shop")
 
