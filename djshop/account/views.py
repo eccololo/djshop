@@ -122,7 +122,17 @@ def my_login(request):
 # Logout user
 def user_logout(request):
 
-    auth.logout(request)
+    # When user add items to cart and is logout those items will be still in cart.
+    try:
+        for key in list(request.session.keys()):
+
+            if key == "session_key":
+                continue
+            else:
+                del request.session[key]
+
+    except KeyError:
+        pass
 
     return redirect("shop")
 
