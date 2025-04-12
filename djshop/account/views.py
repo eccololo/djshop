@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from django.contrib import messages
 
 # Registration Email Verification
@@ -11,11 +10,14 @@ from django.contrib.auth.models import User
 
 # Login / Logout
 from django.contrib.auth.models import auth
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 
 from .forms import CreateUserForm, LoginForm, UpdateUserForm
 from .token import user_tokenizer_generate
+
+from payment.forms import ShippingForm
+from payment.models import ShippingAddress
 
 
 # Account registration.
@@ -189,6 +191,40 @@ def delete_account(request):
         return redirect("shop")
 
     return render(request, "account/delete-account.html")
+
+
+# Shipping view
+@login_required(login_url="my-login")
+def manage_shipping(request):
+
+    try:
+        # Account user with shipping information
+        shipping = ShippingAddress.objects.get(user=request.user.id)
+    except ShippingAddress.DoesNotExist:
+        # Account user with no shipping information
+        shipping = None
+
+    # Create new object
+    form = ShippingForm(instance=shipping)
+
+    if request.method == "POST":
+        
+        # Update existing object
+        form = ShippingForm(request.POST, instance=shipping)
+
+        if form.is_valid():
+
+            shipping_user = form.save(commit=False)
+            shipping_user.user = request.user
+            shipping_user.save()
+
+            return redirect("dashboard")
+        
+    context = {
+        "form": form
+    }
+
+    return render(request, "account/manage-shipping.html", context)
 
 
 
