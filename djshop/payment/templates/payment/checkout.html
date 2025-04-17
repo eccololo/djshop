@@ -36,7 +36,7 @@
             type="text"
             placeholder="Full name*"
             autocomplete="off"
-            value=""
+            value="{{ shipping.full_name }}"
             required
           />
         </div>
@@ -50,7 +50,7 @@
             type="email"
             placeholder="Email address*"
             autocomplete="off"
-            value=""
+            value="{{ shipping.email }}"
             required
           />
         </div>
@@ -64,7 +64,7 @@
             type="text"
             placeholder="Address 1*"
             autocomplete="off"
-            value=""
+            value="{{ shipping.address1 }}"
             required
           />
         </div>
@@ -78,7 +78,7 @@
             type="text"
             placeholder="Address 2*"
             autocomplete="off"
-            value=""
+            value="{{ shipping.address2 }}"
             required
           />
         </div>
@@ -92,7 +92,7 @@
             type="text"
             placeholder="City*"
             autocomplete="off"
-            value=""
+            value="{{ shipping.city }}"
             required
           />
         </div>
@@ -106,7 +106,7 @@
             type="text"
             placeholder="State (Optional)"
             autocomplete="off"
-            value=""
+            value="{{ shipping.state }}"
           />
         </div>
 
@@ -119,7 +119,7 @@
             type="text"
             placeholder="Zip code (Optional)"
             autocomplete="off"
-            value=""
+            value="{{ shipping.zipcode }}"
           />
         </div>
       </div>
