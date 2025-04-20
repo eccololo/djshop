@@ -32,6 +32,14 @@ def checkout(request):
 
 def payment_success(request):
 
+    # Clear the shopping cart
+
+    for key in list(request.session.keys()):
+
+        if key == "session_key":
+
+            del request.session[key]
+
     return render(request, "payment/payment-success.html")
 
 
@@ -74,12 +82,10 @@ def complete_order(request):
                 user=request.user
             )
 
-            order_id = order.pk
-
             for item in cart:
 
                 OrderItem.objects.create(
-                    order=order_id,
+                    order=order,
                     product=item["product"],
                     quantity=item["qty"],
                     price=item["price"],
@@ -95,12 +101,10 @@ def complete_order(request):
                 amount_paid=total_cost,
             )
 
-            order_id = order.pk
-
             for item in cart:
 
                 OrderItem.objects.create(
-                    order=order_id,
+                    order=order,
                     product=item["product"],
                     quantity=item["qty"],
                     price=item["price"],
