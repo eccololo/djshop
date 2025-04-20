@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 
 from .models import ShippingAddress, Order, OrderItem
 
@@ -63,4 +64,48 @@ def complete_order(request):
         # Get total cost of items
         total_cost = cart.get_total()
 
+        if request.user.is_authenticated:
+
+            order = Order.objects.create(
+                full_name=name,
+                email=email,
+                shipping_address=shipping_address,
+                amount_paid=total_cost,
+                user=request.user
+            )
+
+            order_id = order.pk
+
+            for item in cart:
+
+                OrderItem.objects.create(
+                    order=order_id,
+                    product=item["product"],
+                    quantity=item["qty"],
+                    price=item["price"],
+                    user=request.user
+                )
         
+        else:
+
+            order = Order.objects.create(
+                full_name=name,
+                email=email,
+                shipping_address=shipping_address,
+                amount_paid=total_cost,
+            )
+
+            order_id = order.pk
+
+            for item in cart:
+
+                OrderItem.objects.create(
+                    order=order_id,
+                    product=item["product"],
+                    quantity=item["qty"],
+                    price=item["price"],
+                )
+
+        order_success = True
+
+        return JsonResponse({"success": order_success})
