@@ -141,3 +141,6 @@ EMAIL_USE_TLS = "True"
 
 EMAIL_HOST_USER = "mateusz.hyla.test@gmail.com" # web app admin email
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+
+# Allow PayPal popups
+SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
