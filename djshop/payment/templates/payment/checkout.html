@@ -16,7 +16,7 @@
     class="container bg-white shadow-md p-5"
     style="width: 500px; border-radius: 20px"
   >
-    <form id="form">
+    <form id="form" onsubmit="event.preventDefault();">
       <div>
         <h3>
           <i class="fa fa-chevron-circle-right" aria-hidden="true"></i> &nbsp;
@@ -124,8 +124,7 @@
         </div>
       </div>
 
-      <br />
-
+      <!--
       <button
         id="complete-order"
         type="submit"
@@ -133,8 +132,8 @@
       >
         &nbsp; Complete order
       </button>
-
-      <br /><br />
+      -->
+      <br />
       <!-- PayPal Integration -->
       <div id="paypal-button-container"></div>
       <script
@@ -150,6 +149,7 @@
 <!-- Ajax integration -->
 
 <script>
+
   // PayPal Integration Script
   const paypalButtonsComponent = paypal.Buttons({
     // optional styling for buttons
@@ -158,6 +158,35 @@
       color: "gold",
       shape: "rect",
       layout: "vertical",
+    },
+
+    onInit: function(data, actions){
+      actions.disable();
+      document.querySelectorAll(".validate").forEach(item => {
+        item.addEventListener("keyup", event => {
+
+          //The required fields are fill out.
+          var orderVerified = "Yes";
+
+          function checkInputs(){
+            $(":input[required]").each(function(){
+              if($(this).val() == "") {
+                // The required fields are empty.
+                orderVerified = "No";
+              }
+            });
+            return orderVerified;
+          };
+
+          var isOrderVerified = checkInputs();
+
+          if(isOrderVerified === "Yes") {
+            actions.enable();
+          } else {
+            actions.disable();
+          }
+        });
+      });
     },
 
     // set up the transaction
@@ -199,6 +228,7 @@
     console.error("PayPal Buttons failed to render");
   });
 
+  /*
   // Complete checkout
   $(document).on("submit", function (e) {
     e.preventDefault();
@@ -227,6 +257,7 @@
       },
     });
   });
+  */
 </script>
 
 {% endblock %}
