@@ -150,6 +150,10 @@
 
 <script>
 
+  // Total price
+  var total_price = '{{ cart.get_total }}'
+
+
   // PayPal Integration Script
   const paypalButtonsComponent = paypal.Buttons({
     // optional styling for buttons
@@ -197,7 +201,7 @@
         purchase_units: [
           {
             amount: {
-              value: "88.44",
+              value: total_price,
             },
           },
         ],
