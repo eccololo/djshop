@@ -166,6 +166,9 @@
 
     onInit: function(data, actions){
       actions.disable();
+
+      // Complete Order - No shipping
+
       document.querySelectorAll(".validate").forEach(item => {
         item.addEventListener("keyup", event => {
 
@@ -191,6 +194,29 @@
           }
         });
       });
+
+      // Complete Order - With Shipping
+
+      //The required fields are fill out.
+      var orderVerified = "Yes";
+
+      function checkInputs(){
+        $(":input[required]").each(function(){
+          if($(this).val() == "") {
+            // The required fields are empty.
+            orderVerified = "No";
+          }
+        });
+        return orderVerified;
+      };
+
+      var isOrderVerified = checkInputs();
+
+      if(isOrderVerified === "Yes") {
+        actions.enable();
+      } else {
+        actions.disable();
+      }
     },
 
     // set up the transaction
@@ -215,6 +241,32 @@
       const captureOrderHandler = (details) => {
         const payerName = details.payer.name.given_name;
         console.log("Transaction completed");
+
+        // Ajax functionality - write order to web app models.
+        $.ajax({
+          type: "POST",
+          url: "{% url 'complete-order' %}",
+          data: {
+            name: $("#name").val(),
+            email: $("#email").val(),
+    
+            address1: $("#address1").val(),
+            address2: $("#address2").val(),
+            city: $("#city").val(),
+    
+            state: $("#state").val(),
+            zipcode: $("#zipcode").val(),
+    
+            csrfmiddlewaretoken: "{{ csrf_token }}",
+            action: "post",
+          },
+          success: function (json) {
+            window.location.replace("{% url 'payment-success' %}");
+          },
+          error: function (xhr, errmsg, err) {
+            window.location.replace("{% url 'payment-failed' %}");
+          },
+        });
       };
 
       return actions.order.capture().then(captureOrderHandler);
@@ -232,36 +284,6 @@
     console.error("PayPal Buttons failed to render");
   });
 
-  /*
-  // Complete checkout
-  $(document).on("submit", function (e) {
-    e.preventDefault();
-    $.ajax({
-      type: "POST",
-      url: "{% url 'complete-order' %}",
-      data: {
-        name: $("#name").val(),
-        email: $("#email").val(),
-
-        address1: $("#address1").val(),
-        address2: $("#address2").val(),
-        city: $("#city").val(),
-
-        state: $("#state").val(),
-        zipcode: $("#zipcode").val(),
-
-        csrfmiddlewaretoken: "{{ csrf_token }}",
-        action: "post",
-      },
-      success: function (json) {
-        window.location.replace("{% url 'payment-success' %}");
-      },
-      error: function (xhr, errmsg, err) {
-        window.location.replace("{% url 'payment-failed' %}");
-      },
-    });
-  });
-  */
 </script>
 
 {% endblock %}
