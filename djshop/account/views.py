@@ -16,6 +16,8 @@ from django.contrib.auth.decorators import login_required
 from .forms import CreateUserForm, LoginForm, UpdateUserForm
 from .token import user_tokenizer_generate
 
+from payment.models import Order, OrderItem
+
 from payment.forms import ShippingForm
 from payment.models import ShippingAddress
 
@@ -225,6 +227,25 @@ def manage_shipping(request):
     }
 
     return render(request, "account/manage-shipping.html", context)
+
+
+# Account order list view
+@login_required(login_url="my-login")
+def track_orders(request):
+
+    try:
+        orders = OrderItem.objects.filter(user=request.user).order_by('-id')
+
+        context = {
+            'orders': orders
+        }
+
+        return render(request, "account/track-orders.html", context)
+    except:
+
+        return render(request, "account/track-orders.html")
+
+    
 
 
 
