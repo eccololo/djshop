@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.core.mail import send_mail
+from django.conf import settings
 
 from .models import ShippingAddress, Order, OrderItem
 
@@ -72,6 +74,8 @@ def complete_order(request):
         # Get total cost of items
         total_cost = cart.get_total()
 
+        product_list = []
+
         if request.user.is_authenticated:
 
             order = Order.objects.create(
@@ -82,6 +86,7 @@ def complete_order(request):
                 user=request.user
             )
 
+
             for item in cart:
 
                 OrderItem.objects.create(
@@ -91,6 +96,8 @@ def complete_order(request):
                     price=item["price"],
                     user=request.user
                 )
+
+                product_list.append(item["product"])
         
         else:
 
@@ -110,6 +117,35 @@ def complete_order(request):
                     price=item["price"],
                 )
 
+                product_list.append(item["product"])
+
         order_success = True
 
+        title = "Your order is received!"
+        message = f"""
+        Hi,
+
+        We have received you order. 
+        You can below list of your purchases: \n
+        {str(product_list)}
+        \n
+        Total cost: ${str(cart.get_total())}
+        \n
+        Thank you for your purchase!
+        """
+        sender = settings.EMAIL_HOST_USER
+
+        send_mail(title, message, sender, [email], fail_silently=False)
+
         return JsonResponse({"success": order_success})
+
+
+def test_email(request):
+    send_mail(
+        'Test email',
+        'If you see this, it works.',
+        settings.EMAIL_HOST_USER,
+        ['mateusz.hyla.it@gmail.com'],
+        fail_silently=False
+    )
+    return JsonResponse({"status": "sent"})
