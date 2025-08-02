@@ -1,0 +1,25 @@
+{% include "shop/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    body {
+        background-color: grey;
+    }
+</style>
+<body>
+    
+    <br />
+    <div class="container bg-white shadow-md p-5 form-layout">
+        <div class="text-center">
+            <i class="fa fa-envelope fa-3x text-info" aria-hidden="true"></i>
+            <br /><br />
+            <h4><strong>A verification link has been sent to your email!</strong></h4>
+            <hr />
+            <h6>Please check your email.</h6>
+         </div>
+    </div>
+</body>
+
+{% endblock %}
